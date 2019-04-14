@@ -139,6 +139,7 @@ class RouterAccess:
                 sub_device_net_connect.disconnect()
                 d_end_time = datetime.now()
                 print("Total time {}".format(d_end_time - d_start_time))
+        print("Data Capture Completed ")
 
 
 
