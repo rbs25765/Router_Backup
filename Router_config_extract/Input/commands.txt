@@ -1,0 +1,9 @@
+show ip int brief
+show cdp nei
+show ip arp
+sh ip bgp summary
+show int desc
+sho running
+show version
+
+

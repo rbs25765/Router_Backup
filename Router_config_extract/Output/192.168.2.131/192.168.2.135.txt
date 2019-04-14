@@ -1,0 +1,295 @@
+
+
+show ip int brief
+
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.2.135   YES DHCP   up                    up      
+Serial0/0                  unassigned      YES NVRAM  administratively down down    
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+Serial0/1                  unassigned      YES NVRAM  administratively down down    
+Serial0/2                  unassigned      YES NVRAM  administratively down down    
+FastEthernet1/0            unassigned      YES NVRAM  administratively down down    
+FastEthernet2/0            unassigned      YES unset  up                    down    
+FastEthernet2/1            unassigned      YES unset  up                    down    
+FastEthernet2/2            unassigned      YES unset  up                    down    
+FastEthernet2/3            unassigned      YES unset  up                    down    
+FastEthernet2/4            unassigned      YES unset  up                    down    
+FastEthernet2/5            unassigned      YES unset  up                    down    
+FastEthernet2/6            unassigned      YES unset  up                    down    
+FastEthernet2/7            unassigned      YES unset  up                    down    
+FastEthernet2/8            unassigned      YES unset  up                    down    
+FastEthernet2/9            unassigned      YES unset  up                    down    
+FastEthernet2/10           unassigned      YES unset  up                    down    
+FastEthernet2/11           unassigned      YES unset  up                    down    
+FastEthernet2/12           unassigned      YES unset  up                    down    
+FastEthernet2/13           unassigned      YES unset  up                    down    
+FastEthernet2/14           unassigned      YES unset  up                    down    
+FastEthernet2/15           unassigned      YES unset  up                    down    
+Vlan1                      unassigned      YES NVRAM  up                    down    
+
+
+
+show cdp nei
+
+Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
+                  S - Switch, H - Host, I - IGMP, r - Repeater
+
+Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
+my-gns3-home-R1  Fas 0/0            151          R        7206VXR   Gig 0/0
+my-gns3-home-S1  Fas 0/0            145        R S I                Gig 0/0
+my-gns3-home-R2  Fas 0/0            165        R S I      3725      Fas 0/0
+my-gns3-home-R5.ex.com
+                 Fas 0/0            171        R S I      3725      Fas 0/0
+my-gns3-home-R4.ex.com
+                 Fas 0/0            128        R S I      3725      Fas 0/0
+
+
+
+show ip arp
+
+Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+Internet  192.168.2.1             0   0050.56c0.0008  ARPA   FastEthernet0/0
+Internet  192.168.2.254          45   0050.56f3.eb87  ARPA   FastEthernet0/0
+Internet  192.168.2.135           -   c203.2a9c.0000  ARPA   FastEthernet0/0
+
+
+
+sh ip bgp summary
+
+% BGP not active
+
+
+
+
+show int desc
+
+Interface                      Status         Protocol Description
+Fa0/0                          up             up       
+Se0/0                          admin down     down     
+Fa0/1                          admin down     down     
+Se0/1                          admin down     down     
+Se0/2                          admin down     down     
+Fa1/0                          admin down     down     
+Fa2/0                          up             down     
+Fa2/1                          up             down     
+Fa2/2                          up             down     
+Fa2/3                          up             down     
+Fa2/4                          up             down     
+Fa2/5                          up             down     
+Fa2/6                          up             down     
+Fa2/7                          up             down     
+Fa2/8                          up             down     
+Fa2/9                          up             down     
+Fa2/10                         up             down     
+Fa2/11                         up             down     
+Fa2/12                         up             down     
+Fa2/13                         up             down     
+Fa2/14                         up             down     
+Fa2/15                         up             down     
+Vl1                            up             down     
+
+
+
+sho running
+
+Building configuration...
+
+Current configuration : 1781 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname my-gns3-home-R3
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$kjOz$fvfeDCWgiisbtykC/IMPP0
+!
+no aaa new-model
+memory-size iomem 5
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip domain name ex.com
+ip auth-proxy max-nodata-conns 3
+ip admission max-nodata-conns 3
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username cisco password 0 cisco
+!
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address dhcp
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface FastEthernet2/0
+!
+interface FastEthernet2/1
+!
+interface FastEthernet2/2
+!
+interface FastEthernet2/3
+!
+interface FastEthernet2/4
+!
+interface FastEthernet2/5
+!
+interface FastEthernet2/6
+!
+interface FastEthernet2/7
+!
+interface FastEthernet2/8
+!
+interface FastEthernet2/9
+!
+interface FastEthernet2/10
+!
+interface FastEthernet2/11
+!
+interface FastEthernet2/12
+!
+interface FastEthernet2/13
+!
+interface FastEthernet2/14
+!
+interface FastEthernet2/15
+!
+interface Vlan1
+ no ip address
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+no cdp log mismatch duplex
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login local
+ transport input all
+!
+!
+end
+
+
+
+
+show version
+
+Cisco IOS Software, 3700 Software (C3725-ADVENTERPRISEK9-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2010 by Cisco Systems, Inc.
+Compiled Wed 18-Aug-10 07:55 by prod_rel_team
+
+ROM: ROMMON Emulation Microcode
+ROM: 3700 Software (C3725-ADVENTERPRISEK9-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)
+
+my-gns3-home-R3 uptime is 1 hour, 1 minute
+System returned to ROM by unknown reload cause - suspect boot_data[BOOT_COUNT] 0x0, BOOT_COUNT 0, BOOTDATA 19
+System image file is "tftp://255.255.255.255/unknown"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 3725 (R7000) processor (revision 0.1) with 124928K/6144K bytes of memory.
+Processor board ID FTX0945W0MY
+R7000 CPU at 240MHz, Implementation 39, Rev 2.1, 256KB L2, 512KB L3 Cache
+19 FastEthernet interfaces
+3 Serial(sync/async) interfaces
+DRAM configuration is 64 bits wide with parity enabled.
+55K bytes of NVRAM.
+
+Configuration register is 0x2102
+
+
