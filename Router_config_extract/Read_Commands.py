@@ -50,13 +50,17 @@ class RouterAccess:
                             'password': self.credentials[1],
                             'secret': self.credentials[2],
                             'device_type': 'cisco_ios'}
-            core_device_connect = ConnectHandler(**core_device)
-            core_device_connect.enable()
-            with open('./Output'+'//'+core_ip+'.txt','w') as file:
-                core_cdp_data = core_device_connect.send_command_expect('show cdp nei det')
-                file.write(core_cdp_data)
-            core_device_connect.disconnect()
-            file_list.append(str('./Output'+'//'+core_ip+'.txt'))
+            try:
+                core_device_connect = ConnectHandler(**core_device)
+                core_device_connect.enable()
+                with open('./Output'+'//'+core_ip+'.txt','w') as file:
+                    core_cdp_data = core_device_connect.send_command_expect('show cdp nei det')
+                    file.write(core_cdp_data)
+                core_device_connect.disconnect()
+                file_list.append(str('./Output'+'//'+core_ip+'.txt'))
+            except:
+                print("Not Acccessible")
+            
         return file_list
 
     def cdp_neighbors_dict(self):
@@ -97,24 +101,29 @@ class RouterAccess:
                            'password': self.credentials[1],
                            'secret': self.credentials[2],
                            'device_type': 'cisco_ios'}
-            core_net_connect=ConnectHandler(**core_device)
-            core_net_connect.enable()
-            core_net_connect.send_command('terminal leng 0')
-            print("connected to : ", core_net_connect.find_prompt())
-            core_folder = os.path.join('./Output',core_ip)
-            if not os.path.isdir(core_folder):
-                os.mkdir(core_folder)
-            for device_commands in self.command_list:
-                print("capturing command {} from {}".format(device_commands,core_ip))
-                core_output = core_net_connect.send_command_expect(device_commands, delay_factor=3)
-                with open(os.path.join(core_folder, core_ip + '.txt'), 'a+') as core_file:
-                    core_file.write('\n\n'+device_commands+'\n\n')
-                    core_file.write(core_output)
-                    core_file.write('\n\n')
-            print("Writing commands to text file completed")
-            core_net_connect.disconnect()
-            end_time = datetime.now()
-            print("Total time {}".format(end_time-start_time))
+            try:
+                core_net_connect=ConnectHandler(**core_device)
+                core_net_connect.enable()
+                core_net_connect.send_command('terminal leng 0')
+                print("connected to : ", core_net_connect.find_prompt())
+                core_folder = os.path.join('./Output',core_ip)
+                if not os.path.isdir(core_folder):
+                    os.mkdir(core_folder)
+                for device_commands in self.command_list:
+                    print("capturing command {} from {}".format(device_commands,core_ip))
+                    core_output = core_net_connect.send_command_expect(device_commands, delay_factor=3)
+                    with open(os.path.join(core_folder, core_ip + '.txt'), 'a+') as core_file:
+                        core_file.write('\n\n'+device_commands+'\n\n')
+                        core_file.write(core_output)
+                        core_file.write('\n\n')
+                print("Writing commands to text file completed")
+                core_net_connect.disconnect()
+                end_time = datetime.now()
+                print("Total time {}".format(end_time-start_time))
+            except NetMikoTimeoutException:
+                print("Device Not Reachable or timout, check device reachability")
+            except NetMikoAuthenticationException:
+                print("Authenticaion failed, check your credentials")
 
             for hname, device_ip in self.cdp_ip_dict[core_ip].items():
                 d_start_time = datetime.now()
@@ -124,24 +133,31 @@ class RouterAccess:
                               'password': self.credentials[1],
                               'secret': self.credentials[2],
                               'device_type': 'cisco_ios'}
-                sub_device_net_connect = ConnectHandler(**sub_device)
-                sub_device_net_connect.enable()
-                sub_device_net_connect.send_command('terminal leng 0')
-                print("connected to : ", sub_device_net_connect.find_prompt())
-                for device_commands in self.command_list:
-                    print("capturing command {} from {}".format(device_commands, device_ip))
-                    device_output = sub_device_net_connect.send_command_expect(device_commands, delay_factor=3)
-                    with open(os.path.join(core_folder, device_ip + '.txt'), 'a+') as device_file:
-                        device_file.write('\n\n' + device_commands + '\n\n')
-                        device_file.write(device_output)
-                        device_file.write('\n\n')
-                print("Writing commands to text file completed")
-                sub_device_net_connect.disconnect()
-                d_end_time = datetime.now()
-                print("Total time {}".format(d_end_time - d_start_time))
-        print("Data Capture Completed ")
+                try:
+                    sub_device_net_connect = ConnectHandler(**sub_device)
+                    sub_device_net_connect.enable()
+                    sub_device_net_connect.send_command('terminal leng 0')
+                    print("connected to : ", sub_device_net_connect.find_prompt())
+                    for device_commands in self.command_list:
+                        print("capturing command {} from {}".format(device_commands, device_ip))
+                        device_output = sub_device_net_connect.send_command_expect(device_commands, delay_factor=3)
+                        with open(os.path.join(core_folder, device_ip + '.txt'), 'a+') as device_file:
+                            device_file.write('\n\n' + device_commands + '\n\n')
+                            device_file.write(device_output)
+                            device_file.write('\n\n')
+                    print("Writing commands to text file completed")
+                    sub_device_net_connect.disconnect()
+                    d_end_time = datetime.now()
+                    print("Total time {}".format(d_end_time - d_start_time))
+                    print("Data Capture Completed ")
+                except NetMikoTimeoutException:
+                    print("Device Not Reachable or timout, check device reachability")
+                except NetMikoAuthenticationException:
+                    print("Authenticaion failed, check your credentials")
+        
 
-
+    def print_output(self):
+        self.final_device_config_gen()
 
     # def creds_2_dict_sets(self):
     #     """ Here the user credential list will be imported and
@@ -178,17 +194,6 @@ class RouterAccess:
     #         for command in commands_list:
     #             device_command_output = net_connect.send_command_expect(command,delay_factor = 5)
 
-
-    def print_output(self):
-        # print(self.core_ip_list)
-        # print(self.command_list)
-        # print(self.credentials)
-        # print(self.cdp_ip_dict)
-        # print(self.file_path_list)
-        self.final_device_config_gen()
-
-
-
     # def core_ssh_connection(self):
     #     """ This method is to connect to core switch and
     #         verify credentials, extract cdp neighbor data"""
@@ -222,13 +227,9 @@ class RouterAccess:
     #                 print("Invalid Credentials, Trying next set of user names and passwords")
 
 
-
-
-
-
-
-ra = RouterAccess()
-command_list = ra.print_output()
+if __name__ == "__main__":
+    ra = RouterAccess()
+    ra.print_output()
 
 
 
