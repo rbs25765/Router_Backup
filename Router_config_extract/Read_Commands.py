@@ -59,7 +59,7 @@ class RouterAccess:
                 core_device_connect.disconnect()
                 file_list.append(str('./Output'+'//'+core_ip+'.txt'))
             except:
-                print("Not Acccessible")
+                print("Not Accessible")
             
         return file_list
 
@@ -151,9 +151,9 @@ class RouterAccess:
                     print("Total time {}".format(d_end_time - d_start_time))
                     print("Data Capture Completed ")
                 except NetMikoTimeoutException:
-                    print("Device Not Reachable or timout, check device reachability")
+                    print("Device Not Reachable or timeout, check device reachability")
                 except NetMikoAuthenticationException:
-                    print("Authenticaion failed, check your credentials")
+                    print("Authentication failed, check your credentials")
         
 
     def print_output(self):

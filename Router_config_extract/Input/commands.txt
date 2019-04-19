@@ -1,9 +1,11 @@
-show ip int brief
-show cdp nei
+please enter show commands from second line onwards, dont enter any command here.
+show ip interface brief
+show cdp neigh
 show ip arp
-sh ip bgp summary
+show ip bgp summary
 show int desc
-sho running
+show running
 show version
-
+show cdp neighbor detail
+show interfaces summary
 
