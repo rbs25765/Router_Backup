@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from netmiko import ConnectHandler
 from netmiko import NetmikoTimeoutError
 from netmiko import NetmikoAuthError
